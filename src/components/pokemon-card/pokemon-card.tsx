@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { PokemonProps } from "@/types/Pokemon"
 
 function PokemonCard({ id, images, name }: PokemonProps) {
   return (
