@@ -28,6 +28,7 @@ export default function Home() {
   const fetchPokemonList = async (page: number) => {
     try {
       setLoading(true)
+      setErrors("")
       const response = await pokemonService.get("/cards", {
         params: {
           q: debounceSearch ? `name:${debounceSearch}` : "",
