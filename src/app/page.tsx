@@ -15,6 +15,7 @@ export default function Home() {
 
   const debounceSearch = useDebounce(filterPokemon, 2000)
 
+  const [errors, setErrors] = useState("")
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
@@ -38,7 +39,7 @@ export default function Home() {
       setPokemonList(pokemons)
       setTotalCount(totalCount)
     } catch (error) {
-      console.error(error)
+      setErrors("Something went wrong! Try again later")
     } finally {
       setLoading(false)
     }
@@ -65,15 +66,19 @@ export default function Home() {
         color="#000"
         loading={loading}
       />
-      {!loading && (
+      {!loading && !errors && (
         <>
-          <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
-            {pokemonList.map(pokemon => (
-              <div key={pokemon.id}>
-                <PokemonCard {...pokemon} />
-              </div>
-            ))}
-          </main>
+          {pokemonList.length !== 0 ? (
+            <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+              {pokemonList.map(pokemon => (
+                <div key={pokemon.id}>
+                  <PokemonCard {...pokemon} />
+                </div>
+              ))}
+            </main>
+          ) : (
+            <p className="font-bold">No pokemon found!</p>
+          )}
           <div>
             <Pagination
               items={totalCount}
@@ -84,6 +89,7 @@ export default function Home() {
           </div>
         </>
       )}
+      {errors && <p>{errors}</p>}
     </div>
   )
 }
